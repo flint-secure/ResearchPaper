@@ -1,0 +1,164 @@
+{
+  "generated_at": "2026-09-23T04:15:14.190116Z",
+  "csv": "data/benchmark_data.csv",
+  "method": "Global chronological replay from empty in-memory store; per-session simulated localStorage; storage_clear omits and does not update stored ID; signals={platform,screen_width,canvas_hash,gpu_renderer}; aggregates restricted to Chrome+Edge+Firefox.",
+  "thresholds": [
+    {
+      "threshold": 0.7,
+      "layers_overall": {
+        "n": 9401,
+        "exact": 7588,
+        "recovery": 1660,
+        "fuzzy": 122,
+        "new": 31
+      },
+      "layers_by_scenario": {
+        "baseline": {
+          "n": 9217,
+          "exact": 7571,
+          "recovery": 1584,
+          "fuzzy": 31,
+          "new": 31
+        },
+        "storage_clear": {
+          "n": 92,
+          "exact": 1,
+          "recovery": 0,
+          "fuzzy": 91,
+          "new": 0
+        },
+        "resize": {
+          "n": 92,
+          "exact": 16,
+          "recovery": 76,
+          "fuzzy": 0,
+          "new": 0
+        }
+      },
+      "new_assignment_n": 31,
+      "new_assignment_rate_pct": 0.3,
+      "false_new_after_first": 2,
+      "fragmentation_n_keys": 39,
+      "fragmentation_n_fragmented": 16,
+      "merge_n_keys": 12,
+      "merge_n_merged": 4,
+      "merge_key_rate_pct": 33.3,
+      "merge_sessions": 4425,
+      "merge_session_rate_pct": 82.5,
+      "n_gt": 5361,
+      "n_in_scope": 9401,
+      "validation_vs_observed": {
+        "observed_layers": {
+          "n": 9401,
+          "exact": 7725,
+          "recovery": 1532,
+          "fuzzy": 116,
+          "new": 28
+        },
+        "layer_deltas": {
+          "n": 0,
+          "exact": -137,
+          "recovery": 128,
+          "fuzzy": 6,
+          "new": 3
+        },
+        "observed_merge_sessions": 4425,
+        "merge_session_delta": 0,
+        "observed_false_new": 2,
+        "false_new_delta": 0,
+        "faithful_enough": true,
+        "notes": "Replay approximately reproduces observed outcomes; residual deltas are expected from empty-store reconstruction."
+      }
+    },
+    {
+      "threshold": 0.8,
+      "layers_overall": {
+        "n": 9401,
+        "exact": 8877,
+        "recovery": 373,
+        "fuzzy": 101,
+        "new": 50
+      },
+      "layers_by_scenario": {
+        "baseline": {
+          "n": 9217,
+          "exact": 8860,
+          "recovery": 297,
+          "fuzzy": 10,
+          "new": 50
+        },
+        "storage_clear": {
+          "n": 92,
+          "exact": 1,
+          "recovery": 0,
+          "fuzzy": 91,
+          "new": 0
+        },
+        "resize": {
+          "n": 92,
+          "exact": 16,
+          "recovery": 76,
+          "fuzzy": 0,
+          "new": 0
+        }
+      },
+      "new_assignment_n": 50,
+      "new_assignment_rate_pct": 0.5,
+      "false_new_after_first": 4,
+      "fragmentation_n_keys": 39,
+      "fragmentation_n_fragmented": 19,
+      "merge_n_keys": 26,
+      "merge_n_merged": 4,
+      "merge_key_rate_pct": 15.4,
+      "merge_sessions": 3120,
+      "merge_session_rate_pct": 58.2,
+      "n_gt": 5361,
+      "n_in_scope": 9401
+    },
+    {
+      "threshold": 0.85,
+      "layers_overall": {
+        "n": 9401,
+        "exact": 8877,
+        "recovery": 373,
+        "fuzzy": 101,
+        "new": 50
+      },
+      "layers_by_scenario": {
+        "baseline": {
+          "n": 9217,
+          "exact": 8860,
+          "recovery": 297,
+          "fuzzy": 10,
+          "new": 50
+        },
+        "storage_clear": {
+          "n": 92,
+          "exact": 1,
+          "recovery": 0,
+          "fuzzy": 91,
+          "new": 0
+        },
+        "resize": {
+          "n": 92,
+          "exact": 16,
+          "recovery": 76,
+          "fuzzy": 0,
+          "new": 0
+        }
+      },
+      "new_assignment_n": 50,
+      "new_assignment_rate_pct": 0.5,
+      "false_new_after_first": 4,
+      "fragmentation_n_keys": 39,
+      "fragmentation_n_fragmented": 19,
+      "merge_n_keys": 26,
+      "merge_n_merged": 4,
+      "merge_key_rate_pct": 15.4,
+      "merge_sessions": 3120,
+      "merge_session_rate_pct": 58.2,
+      "n_gt": 5361,
+      "n_in_scope": 9401
+    }
+  ]
+}

@@ -1,0 +1,307 @@
+{
+  "N": 9401,
+  "date_range": [
+    "2026-07-23",
+    "2026-07-30"
+  ],
+  "browsers_raw": [
+    [
+      "Chrome",
+      4560
+    ],
+    [
+      "Firefox",
+      2761
+    ],
+    [
+      "Edge",
+      2080
+    ]
+  ],
+  "engines": [
+    [
+      "Chromium",
+      6640
+    ],
+    [
+      "Firefox",
+      2761
+    ]
+  ],
+  "experiments": {
+    "E1": 92,
+    "E2": 184,
+    "E3": 9036,
+    "E4": 89
+  },
+  "n_gt": 5361,
+  "n_college": 5153,
+  "lab_a_seats": [
+    "LabA-01",
+    "LabA-09",
+    "LabA-16",
+    "LabA-17"
+  ],
+  "lab_b_seats": [
+    "LabB-01",
+    "LabB-02",
+    "LabB-03",
+    "LabB-06",
+    "LabB-07",
+    "LabB-08",
+    "LabB-09",
+    "LabB-10",
+    "LabB-11",
+    "LabB-13",
+    "LabB-14",
+    "LabB-15",
+    "LabB-16",
+    "LabB-18",
+    "LabB-19",
+    "LabB-20",
+    "LabB-21",
+    "LabB-22"
+  ],
+  "n_lab_seats": 22,
+  "stability_physical_baseline": {
+    "Chromium": {
+      "rates": {
+        "canvas_hash": 96.6,
+        "gpu_renderer": 97.7,
+        "screen_width": 100.0,
+        "screen_height": 100.0,
+        "platform_string": 100.0,
+        "language_code": 100.0,
+        "timezone_id": 100.0,
+        "local_fp": 95.5
+      },
+      "n_groups": 22,
+      "n_sessions": 3264
+    },
+    "Firefox": {
+      "rates": {
+        "canvas_hash": 92.1,
+        "gpu_renderer": 97.1,
+        "screen_width": 100.0,
+        "screen_height": 100.0,
+        "platform_string": 100.0,
+        "language_code": 100.0,
+        "timezone_id": 100.0,
+        "local_fp": 92.1
+      },
+      "n_groups": 17,
+      "n_sessions": 1993
+    }
+  },
+  "layers": {
+    "baseline": {
+      "n": 9217,
+      "exact": 7713,
+      "recovery": 1451,
+      "fuzzy": 25,
+      "new": 28
+    },
+    "storage_clear": {
+      "n": 92,
+      "exact": 1,
+      "recovery": 0,
+      "fuzzy": 91,
+      "new": 0
+    },
+    "resize": {
+      "n": 92,
+      "exact": 11,
+      "recovery": 81,
+      "fuzzy": 0,
+      "new": 0
+    },
+    "overall": {
+      "n": 9401,
+      "exact": 7725,
+      "recovery": 1532,
+      "fuzzy": 116,
+      "new": 28
+    },
+    "e2_only": {
+      "n": 184,
+      "exact": 12,
+      "recovery": 81,
+      "fuzzy": 91,
+      "new": 0
+    }
+  },
+  "new_assignment": {
+    "n": 28,
+    "rate_pct": 0.3
+  },
+  "non_exact": {
+    "n": 1676,
+    "rate_pct": 17.83
+  },
+  "layer1_counterfactual_fold": 59.9,
+  "false_new_after_first": 2,
+  "fragmentation": {
+    "n_keys": 39,
+    "n_fragmented": 2,
+    "key_rate_pct": 5.1,
+    "examples": [
+      {
+        "key": "LabB-14|Chromium",
+        "n_ids": 2
+      },
+      {
+        "key": "LabB-22|Firefox",
+        "n_ids": 2
+      }
+    ]
+  },
+  "false_merge_gt": {
+    "n_keys": 11,
+    "n_merged": 3,
+    "key_rate_pct": 27.3,
+    "merge_sessions": 4425,
+    "session_rate_pct": 82.5,
+    "examples": [
+      {
+        "device_id": "51277cbf",
+        "engine": "Chromium",
+        "n_physicals": 17,
+        "physicals": [
+          "LabA-16",
+          "LabB-01",
+          "LabB-02",
+          "LabB-03",
+          "LabB-06",
+          "LabB-07",
+          "LabB-08",
+          "LabB-09",
+          "LabB-10",
+          "LabB-11",
+          "LabB-14",
+          "LabB-16",
+          "LabB-18",
+          "LabB-19",
+          "LabB-20",
+          "LabB-21",
+          "LabB-22"
+        ]
+      },
+      {
+        "device_id": "7e2eda6b",
+        "engine": "Firefox",
+        "n_physicals": 13,
+        "physicals": [
+          "LabB-01",
+          "LabB-02",
+          "LabB-07",
+          "LabB-08",
+          "LabB-09",
+          "LabB-10",
+          "LabB-14",
+          "LabB-16",
+          "LabB-18",
+          "LabB-19",
+          "LabB-20",
+          "LabB-21",
+          "LabB-22"
+        ]
+      },
+      {
+        "device_id": "fbd8ec5a",
+        "engine": "Firefox",
+        "n_physicals": 3,
+        "physicals": [
+          "LabB-06",
+          "LabB-11",
+          "LabB-22"
+        ]
+      }
+    ]
+  },
+  "latency_e3": {
+    "screen_ms": {
+      "n": 9036,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0
+    },
+    "canvas_ms": {
+      "n": 9036,
+      "mean": 7.1,
+      "p50": 4.0,
+      "p95": 21.0
+    },
+    "webgl_ms": {
+      "n": 9036,
+      "mean": 14.7,
+      "p50": 8.0,
+      "p95": 46.0
+    },
+    "platform_ms": {
+      "n": 9036,
+      "mean": 0.4,
+      "p50": 0.0,
+      "p95": 2.0
+    },
+    "collector_total_ms": {
+      "n": 9036,
+      "mean": 22.2,
+      "p50": 12.0,
+      "p95": 67.0
+    },
+    "api_ms": {
+      "n": 9036,
+      "mean": 229.0,
+      "p50": 267.0,
+      "p95": 428.0
+    },
+    "e2e_ms": {
+      "n": 9036,
+      "mean": 251.2,
+      "p50": 278.0,
+      "p95": 438.2
+    }
+  },
+  "e4": {
+    "n": 89,
+    "paired_physicals": 15,
+    "overlapping_ids": 0,
+    "paired_list": [
+      "LabB-01",
+      "LabB-02",
+      "LabB-06",
+      "LabB-07",
+      "LabB-08",
+      "LabB-09",
+      "LabB-10",
+      "LabB-11",
+      "LabB-14",
+      "LabB-16",
+      "LabB-18",
+      "LabB-19",
+      "LabB-20",
+      "LabB-21",
+      "LabB-22"
+    ],
+    "chrome_edge_paired": 7,
+    "chrome_edge_shared_id": 7
+  },
+  "os": [
+    [
+      "Windows",
+      5777
+    ],
+    [
+      "Android",
+      2480
+    ],
+    [
+      "macOS",
+      728
+    ],
+    [
+      "Linux",
+      416
+    ]
+  ]
+}
