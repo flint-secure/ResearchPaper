@@ -21,7 +21,9 @@ import re
 import statistics as st
 from collections import Counter, defaultdict
 from datetime import datetime
+from fractions import Fraction
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CSV = ROOT / "data" / "benchmark_data.csv"
@@ -194,6 +196,83 @@ def ts(r):
         return datetime.min
 
 
+def baseline_coverage(groups):
+    records = []
+    for (physical, eng), rows in sorted(groups.items()):
+        times = [ts(row) for row in rows]
+        records.append({
+            "physical": physical, "engine": eng, "n_sessions": len(rows),
+            "span_minutes": (max(times) - min(times)).total_seconds() / 60,
+            "n_dates_utc": len({time.date() for time in times}),
+            "n_dates_nepal": len({time.astimezone(ZoneInfo("Asia/Kathmandu")).date() for time in times}),
+        })
+    return {
+        "n_groups": len(records),
+        "multi_date_groups_utc": sum(record["n_dates_utc"] > 1 for record in records),
+        "multi_date_groups_nepal": sum(record["n_dates_nepal"] > 1 for record in records),
+        "max_span_minutes": round(max(record["span_minutes"] for record in records), 4),
+        "groups": records,
+    }
+
+
+def weighted_quantile(samples, p):
+    """Inverse empirical CDF with exact rational observation weights."""
+    cumulative = Fraction(0)
+    for value, weight in sorted(samples):
+        cumulative += weight
+        if cumulative >= Fraction(p, 100):
+            return value
+    return samples[-1][0] if samples else None
+
+
+def labeled_latency(e3):
+    rows = [row for row in e3 if row["_physical"]]
+    devices = defaultdict(list)
+    groups = defaultdict(list)
+    for row in rows:
+        devices[row["_physical"]].append(row)
+        groups[(row["_physical"], row["_engine"])].append(row)
+    balanced = {}
+    for field in ("collector_total_ms", "api_ms", "e2e_ms"):
+        values_by_device = []
+        for device_rows in devices.values():
+            values = []
+            for row in device_rows:
+                if field == "e2e_ms":
+                    client, api = fnum(row.get("collector_total_ms")), fnum(row.get("api_ms"))
+                    value = client + api if client is not None and api is not None else None
+                else:
+                    value = fnum(row.get(field))
+                if value is not None:
+                    values.append(value)
+            if values:
+                values_by_device.append(values)
+        count = len(values_by_device)
+        samples = [(value, Fraction(1, count * len(values)))
+                   for values in values_by_device for value in values]
+        balanced[field] = {
+            "n": len(samples), "n_devices": count,
+            "mean": round(st.mean(st.mean(values) for values in values_by_device), 1),
+            "p50": round(weighted_quantile(samples, 50), 1),
+            "p95": round(weighted_quantile(samples, 95), 1),
+        }
+    return {
+        "n_sessions": len(rows), "n_devices": len(devices),
+        "n_device_engine_groups": len(groups),
+        "quantile_method": "Inverse weighted empirical CDF; each device has total weight 1/D and each valid observation weight 1/(D*n_d).",
+        "pooled": lat_stats(rows), "device_balanced": balanced,
+        "by_engine": {
+            eng: {"n_devices": len({row["_physical"] for row in rows if row["_engine"] == eng}),
+                  "latency": lat_stats([row for row in rows if row["_engine"] == eng])}
+            for eng in ("Chromium", "Firefox")
+        },
+        "by_device_engine": [
+            {"physical": physical, "engine": eng, "latency": lat_stats(group)}
+            for (physical, eng), group in sorted(groups.items())
+        ],
+    }
+
+
 def compute(rows):
     N = len(rows)
     gt = [r for r in rows if r["_physical"]]
@@ -243,6 +322,8 @@ def compute(rows):
     merge_sessions = sum(
         1 for r in gt if len(id_to_phys[(r["device_id"], r["_engine"])]) > 1
     )
+    all_physicals = {r["_physical"] for r in gt}
+    affected_physicals = set().union(*(set(v) for v in merge_keys.values())) if merge_keys else set()
 
     seen = set()
     false_new = 0
@@ -315,6 +396,7 @@ def compute(rows):
         "lab_b_seats": [x for x in lab_seats if x.startswith("LabB")],
         "n_lab_seats": len(lab_seats),
         "stability_physical_baseline": stability,
+        "baseline_coverage": baseline_coverage(base_groups),
         "layers": layers,
         "new_assignment": {"n": new_n, "rate_pct": round(100 * new_n / N, 2)},
         "non_exact": {"n": non_exact, "rate_pct": round(100 * non_exact / N, 2)},
@@ -330,6 +412,9 @@ def compute(rows):
             ],
         },
         "false_merge_gt": {
+            "n_devices": len(all_physicals),
+            "n_affected_devices": len(affected_physicals),
+            "device_involvement_rate_pct": round(100 * len(affected_physicals) / len(all_physicals), 1),
             "n_keys": len(id_to_phys),
             "n_merged": len(merge_keys),
             "key_rate_pct": round(100 * len(merge_keys) / len(id_to_phys), 1)
@@ -340,6 +425,7 @@ def compute(rows):
             "examples": merge_examples,
         },
         "latency_e3": lat_stats(e3),
+        "latency_e3_labeled": labeled_latency(e3),
         "e4": {
             "n": len(e4),
             "paired_physicals": len(paired),

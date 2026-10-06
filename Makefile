@@ -1,8 +1,4 @@
-MAIN = paper
-LATEX = pdflatex
-LATEXFLAGS = -interaction=nonstopmode -halt-on-error -file-line-error
-
-.PHONY: pdf metrics replay figures reproduce clean open
+.PHONY: metrics replay figures reproduce
 
 metrics:
 	python3 scripts/aggregate_metrics.py
@@ -13,16 +9,4 @@ replay:
 figures:
 	python3 scripts/generate_figures.py
 
-reproduce: metrics replay figures pdf
-
-pdf: $(MAIN).pdf
-
-$(MAIN).pdf: $(MAIN).tex IEEEtran.cls sections/*.tex
-	$(LATEX) $(LATEXFLAGS) $(MAIN).tex
-	$(LATEX) $(LATEXFLAGS) $(MAIN).tex
-
-clean:
-	rm -f $(MAIN).{aux,log,out,toc,lof,lot,fls,fdb_latexmk,synctex.gz,bbl,blg}
-
-open: pdf
-	open $(MAIN).pdf
+reproduce: metrics replay figures

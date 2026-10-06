@@ -12,3 +12,12 @@ __pycache__/
 *.fdb_latexmk
 *.synctex.gz
 paper.pdf
+
+# Local review planning and checks
+/.check/
+
+# Keep manuscript source and rendered artifacts local
+/paper.tex
+/IEEEtran.cls
+/sections/
+/figures/

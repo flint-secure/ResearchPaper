@@ -176,10 +176,10 @@ def similarity(left: str, right: str, mode: str) -> float:
     return 1.0 - levenshtein(left, right) / max(len(left), len(right))
 
 
-def score(incoming: dict[str, str], stored: dict[str, str]) -> float:
+def score(incoming: dict[str, str], stored: dict[str, str], rules=RULES) -> float:
     weighted = 0.0
     total_weight = 0.0
-    for name, weight, mode, required in RULES:
+    for name, weight, mode, required in rules:
         left, right = incoming.get(name, ""), stored.get(name, "")
         if not left or not right:
             if required:
@@ -191,7 +191,7 @@ def score(incoming: dict[str, str], stored: dict[str, str]) -> float:
     return weighted / total_weight if total_weight else 0.0
 
 
-def identify(store: Store, row: dict, threshold: float, sequence: int) -> tuple[dict, int]:
+def identify(store: Store, row: dict, threshold: float, sequence: int, rules=RULES) -> tuple[dict, int]:
     signals = {
         "platform": row["platform_string"],
         "screen_width": row["screen_width"],
@@ -218,7 +218,7 @@ def identify(store: Store, row: dict, threshold: float, sequence: int) -> tuple[
     block = block_key(signals)
     best, best_score = None, 0.0
     for candidate in store.candidates(block):
-        candidate_score = score(signals, candidate["signals"])
+        candidate_score = score(signals, candidate["signals"], rules)
         if candidate_score > best_score:
             best, best_score = candidate, candidate_score
     if best is not None and best_score >= threshold:
@@ -282,7 +282,7 @@ def count_false_new(rows: list[dict]) -> int:
     return count
 
 
-def replay(rows: list[dict], threshold: float) -> list[dict]:
+def replay(rows: list[dict], threshold: float, rules=RULES) -> list[dict]:
     store = Store()
     local_storage: dict[str, str] = {}
     sequence = 0
@@ -291,7 +291,7 @@ def replay(rows: list[dict], threshold: float) -> list[dict]:
         stored_id = "" if row["scenario"] == "storage_clear" else local_storage.get(row["session_id"], "")
         current = dict(row)
         current["stored_device_id"] = stored_id
-        result, sequence = identify(store, current, threshold, sequence)
+        result, sequence = identify(store, current, threshold, sequence, rules)
         current.update(result)
         if row["scenario"] != "storage_clear":
             local_storage[row["session_id"]] = result["device_id"]
@@ -315,13 +315,18 @@ def aggregate(rows: list[dict], threshold: float, observed: dict) -> dict:
     merge_sessions = sum(
         1 for row in gt if (row["device_id"], row["engine"]) in merged
     )
+    physicals = {row["physical"] for row in gt}
+    affected = {row["physical"] for row in gt if (row["device_id"], row["engine"]) in merged}
     layers = layer_counts(in_scope)
     result = {
         "threshold": threshold,
+        "n_devices": len(physicals),
+        "n_affected_devices": len(affected),
+        "device_involvement_rate_pct": round1(100 * len(affected) / len(physicals)),
         "layers_overall": layers,
         "layers_by_scenario": by_scenario,
         "new_assignment_n": layers["new"],
-        "new_assignment_rate_pct": round1(100 * layers["new"] / len(in_scope)),
+        "new_assignment_rate_pct": round(100 * layers["new"] / len(in_scope), 2),
         "false_new_after_first": count_false_new(gt),
         "fragmentation_n_keys": len(fragmentation),
         "fragmentation_n_fragmented": sum(
@@ -372,7 +377,10 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--csv", default="data/benchmark_data.csv")
     parser.add_argument("--out", default="data/threshold_sensitivity.json")
-    parser.add_argument("--thresholds", default="0.70,0.80,0.85")
+    default_thresholds = sorted({value / 100 for value in range(70, 91)} | {0.705, 0.709, 0.7096, 0.7097})
+    parser.add_argument("--thresholds", default=",".join(str(value) for value in default_thresholds))
+    parser.add_argument("--weights-out", default="data/weight_sensitivity.json")
+    parser.add_argument("--weight-threshold", type=float, default=0.70)
     args = parser.parse_args()
     thresholds = [float(value.strip()) for value in args.thresholds.split(",") if value.strip()]
     rows = load_rows(Path(args.csv))
@@ -386,7 +394,7 @@ def main() -> None:
             result.pop("validation_vs_observed", None)
         results.append(result)
         print(
-            f"threshold={threshold:.2f} in_scope={result['n_in_scope']} "
+            f"threshold={threshold:.4f} in_scope={result['n_in_scope']} "
             f"fuzzy={result['layers_overall']['fuzzy']} "
             f"new={result['new_assignment_n']} ({result['new_assignment_rate_pct']:.2f}%) "
             f"merge_sessions={result['merge_sessions']} ({result['merge_session_rate_pct']:.1f}%)"
@@ -401,6 +409,27 @@ def main() -> None:
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8")
     print(f"Wrote {destination}")
+    configurations = [("configured", RULES),
+                      ("equal", tuple((name, 1.0, mode, required) for name, _, mode, required in RULES))]
+    for omitted in ("gpu_renderer", "canvas_hash", "screen_width", "platform"):
+        configurations.append((f"without_{omitted}", tuple(rule for rule in RULES if rule[0] != omitted)))
+    weight_results = []
+    for name, rules in configurations:
+        result = aggregate(replay(rows, args.weight_threshold, rules), args.weight_threshold, observed)
+        result.pop("validation_vs_observed", None)
+        result.update({"configuration": name, "weights": {rule[0]: rule[1] for rule in rules}})
+        weight_results.append(result)
+        print(f"weights={name} devices={result['n_affected_devices']}/{result['n_devices']} "
+              f"merge_sessions={result['merge_session_rate_pct']:.1f}% new={result['new_assignment_n']}")
+    weights_output = {
+        "csv": args.csv, "threshold": args.weight_threshold,
+        "method": "Independent chronological empty-store replays at fixed cutoff; candidate blocking remains platform+screen_width, including when either scoring contribution is omitted. Only four transmitted fields are scored; timezone/language remain absent.",
+        "configurations": weight_results,
+    }
+    weights_destination = Path(args.weights_out)
+    weights_destination.parent.mkdir(parents=True, exist_ok=True)
+    weights_destination.write_text(json.dumps(weights_output, indent=2) + "\n", encoding="utf-8")
+    print(f"Wrote {weights_destination}")
 
 
 if __name__ == "__main__":

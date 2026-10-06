@@ -1,0 +1,345 @@
+{
+  "csv": "data/benchmark_data.csv",
+  "threshold": 0.7,
+  "method": "Independent chronological empty-store replays at fixed cutoff; candidate blocking remains platform+screen_width, including when either scoring contribution is omitted. Only four transmitted fields are scored; timezone/language remain absent.",
+  "configurations": [
+    {
+      "threshold": 0.7,
+      "n_devices": 24,
+      "n_affected_devices": 17,
+      "device_involvement_rate_pct": 70.8,
+      "layers_overall": {
+        "n": 9401,
+        "exact": 7588,
+        "recovery": 1660,
+        "fuzzy": 122,
+        "new": 31
+      },
+      "layers_by_scenario": {
+        "baseline": {
+          "n": 9217,
+          "exact": 7571,
+          "recovery": 1584,
+          "fuzzy": 31,
+          "new": 31
+        },
+        "storage_clear": {
+          "n": 92,
+          "exact": 1,
+          "recovery": 0,
+          "fuzzy": 91,
+          "new": 0
+        },
+        "resize": {
+          "n": 92,
+          "exact": 16,
+          "recovery": 76,
+          "fuzzy": 0,
+          "new": 0
+        }
+      },
+      "new_assignment_n": 31,
+      "new_assignment_rate_pct": 0.33,
+      "false_new_after_first": 2,
+      "fragmentation_n_keys": 39,
+      "fragmentation_n_fragmented": 16,
+      "merge_n_keys": 12,
+      "merge_n_merged": 4,
+      "merge_key_rate_pct": 33.3,
+      "merge_sessions": 4425,
+      "merge_session_rate_pct": 82.5,
+      "n_gt": 5361,
+      "n_in_scope": 9401,
+      "configuration": "configured",
+      "weights": {
+        "gpu_renderer": 1.0,
+        "canvas_hash": 0.9,
+        "screen_width": 0.65,
+        "platform": 0.55,
+        "timezone": 0.5,
+        "language": 0.45
+      }
+    },
+    {
+      "threshold": 0.7,
+      "n_devices": 24,
+      "n_affected_devices": 18,
+      "device_involvement_rate_pct": 75.0,
+      "layers_overall": {
+        "n": 9401,
+        "exact": 7431,
+        "recovery": 1815,
+        "fuzzy": 128,
+        "new": 27
+      },
+      "layers_by_scenario": {
+        "baseline": {
+          "n": 9217,
+          "exact": 7414,
+          "recovery": 1739,
+          "fuzzy": 37,
+          "new": 27
+        },
+        "storage_clear": {
+          "n": 92,
+          "exact": 1,
+          "recovery": 0,
+          "fuzzy": 91,
+          "new": 0
+        },
+        "resize": {
+          "n": 92,
+          "exact": 16,
+          "recovery": 76,
+          "fuzzy": 0,
+          "new": 0
+        }
+      },
+      "new_assignment_n": 27,
+      "new_assignment_rate_pct": 0.29,
+      "false_new_after_first": 2,
+      "fragmentation_n_keys": 39,
+      "fragmentation_n_fragmented": 16,
+      "merge_n_keys": 11,
+      "merge_n_merged": 4,
+      "merge_key_rate_pct": 36.4,
+      "merge_sessions": 4633,
+      "merge_session_rate_pct": 86.4,
+      "n_gt": 5361,
+      "n_in_scope": 9401,
+      "configuration": "equal",
+      "weights": {
+        "gpu_renderer": 1.0,
+        "canvas_hash": 1.0,
+        "screen_width": 1.0,
+        "platform": 1.0,
+        "timezone": 1.0,
+        "language": 1.0
+      }
+    },
+    {
+      "threshold": 0.7,
+      "n_devices": 24,
+      "n_affected_devices": 17,
+      "device_involvement_rate_pct": 70.8,
+      "layers_overall": {
+        "n": 9401,
+        "exact": 8877,
+        "recovery": 373,
+        "fuzzy": 101,
+        "new": 50
+      },
+      "layers_by_scenario": {
+        "baseline": {
+          "n": 9217,
+          "exact": 8860,
+          "recovery": 297,
+          "fuzzy": 10,
+          "new": 50
+        },
+        "storage_clear": {
+          "n": 92,
+          "exact": 1,
+          "recovery": 0,
+          "fuzzy": 91,
+          "new": 0
+        },
+        "resize": {
+          "n": 92,
+          "exact": 16,
+          "recovery": 76,
+          "fuzzy": 0,
+          "new": 0
+        }
+      },
+      "new_assignment_n": 50,
+      "new_assignment_rate_pct": 0.53,
+      "false_new_after_first": 4,
+      "fragmentation_n_keys": 39,
+      "fragmentation_n_fragmented": 19,
+      "merge_n_keys": 26,
+      "merge_n_merged": 4,
+      "merge_key_rate_pct": 15.4,
+      "merge_sessions": 3120,
+      "merge_session_rate_pct": 58.2,
+      "n_gt": 5361,
+      "n_in_scope": 9401,
+      "configuration": "without_gpu_renderer",
+      "weights": {
+        "canvas_hash": 0.9,
+        "screen_width": 0.65,
+        "platform": 0.55,
+        "timezone": 0.5,
+        "language": 0.45
+      }
+    },
+    {
+      "threshold": 0.7,
+      "n_devices": 24,
+      "n_affected_devices": 21,
+      "device_involvement_rate_pct": 87.5,
+      "layers_overall": {
+        "n": 9401,
+        "exact": 6859,
+        "recovery": 2384,
+        "fuzzy": 139,
+        "new": 19
+      },
+      "layers_by_scenario": {
+        "baseline": {
+          "n": 9217,
+          "exact": 6848,
+          "recovery": 2302,
+          "fuzzy": 48,
+          "new": 19
+        },
+        "storage_clear": {
+          "n": 92,
+          "exact": 1,
+          "recovery": 0,
+          "fuzzy": 91,
+          "new": 0
+        },
+        "resize": {
+          "n": 92,
+          "exact": 10,
+          "recovery": 82,
+          "fuzzy": 0,
+          "new": 0
+        }
+      },
+      "new_assignment_n": 19,
+      "new_assignment_rate_pct": 0.2,
+      "false_new_after_first": 0,
+      "fragmentation_n_keys": 39,
+      "fragmentation_n_fragmented": 10,
+      "merge_n_keys": 7,
+      "merge_n_merged": 4,
+      "merge_key_rate_pct": 57.1,
+      "merge_sessions": 5049,
+      "merge_session_rate_pct": 94.2,
+      "n_gt": 5361,
+      "n_in_scope": 9401,
+      "configuration": "without_canvas_hash",
+      "weights": {
+        "gpu_renderer": 1.0,
+        "screen_width": 0.65,
+        "platform": 0.55,
+        "timezone": 0.5,
+        "language": 0.45
+      }
+    },
+    {
+      "threshold": 0.7,
+      "n_devices": 24,
+      "n_affected_devices": 17,
+      "device_involvement_rate_pct": 70.8,
+      "layers_overall": {
+        "n": 9401,
+        "exact": 8877,
+        "recovery": 373,
+        "fuzzy": 101,
+        "new": 50
+      },
+      "layers_by_scenario": {
+        "baseline": {
+          "n": 9217,
+          "exact": 8860,
+          "recovery": 297,
+          "fuzzy": 10,
+          "new": 50
+        },
+        "storage_clear": {
+          "n": 92,
+          "exact": 1,
+          "recovery": 0,
+          "fuzzy": 91,
+          "new": 0
+        },
+        "resize": {
+          "n": 92,
+          "exact": 16,
+          "recovery": 76,
+          "fuzzy": 0,
+          "new": 0
+        }
+      },
+      "new_assignment_n": 50,
+      "new_assignment_rate_pct": 0.53,
+      "false_new_after_first": 4,
+      "fragmentation_n_keys": 39,
+      "fragmentation_n_fragmented": 19,
+      "merge_n_keys": 26,
+      "merge_n_merged": 4,
+      "merge_key_rate_pct": 15.4,
+      "merge_sessions": 3120,
+      "merge_session_rate_pct": 58.2,
+      "n_gt": 5361,
+      "n_in_scope": 9401,
+      "configuration": "without_screen_width",
+      "weights": {
+        "gpu_renderer": 1.0,
+        "canvas_hash": 0.9,
+        "platform": 0.55,
+        "timezone": 0.5,
+        "language": 0.45
+      }
+    },
+    {
+      "threshold": 0.7,
+      "n_devices": 24,
+      "n_affected_devices": 17,
+      "device_involvement_rate_pct": 70.8,
+      "layers_overall": {
+        "n": 9401,
+        "exact": 8877,
+        "recovery": 373,
+        "fuzzy": 101,
+        "new": 50
+      },
+      "layers_by_scenario": {
+        "baseline": {
+          "n": 9217,
+          "exact": 8860,
+          "recovery": 297,
+          "fuzzy": 10,
+          "new": 50
+        },
+        "storage_clear": {
+          "n": 92,
+          "exact": 1,
+          "recovery": 0,
+          "fuzzy": 91,
+          "new": 0
+        },
+        "resize": {
+          "n": 92,
+          "exact": 16,
+          "recovery": 76,
+          "fuzzy": 0,
+          "new": 0
+        }
+      },
+      "new_assignment_n": 50,
+      "new_assignment_rate_pct": 0.53,
+      "false_new_after_first": 4,
+      "fragmentation_n_keys": 39,
+      "fragmentation_n_fragmented": 19,
+      "merge_n_keys": 26,
+      "merge_n_merged": 4,
+      "merge_key_rate_pct": 15.4,
+      "merge_sessions": 3120,
+      "merge_session_rate_pct": 58.2,
+      "n_gt": 5361,
+      "n_in_scope": 9401,
+      "configuration": "without_platform",
+      "weights": {
+        "gpu_renderer": 1.0,
+        "canvas_hash": 0.9,
+        "screen_width": 0.65,
+        "timezone": 0.5,
+        "language": 0.45
+      }
+    }
+  ]
+}
